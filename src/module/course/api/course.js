@@ -58,3 +58,23 @@ export const findCourseView = courseId => {
 export const savemedia = teachplanMedia => {
   return http.requestPost(apiUrl+'/course/savemedia',teachplanMedia);
 };
+
+//获取课程基本信息
+export const getCoursebaseById = id => {
+  return http.requestQuickGet(apiUrl+'/course/coursebase/get/'+id)
+};
+
+//更新课程基本信息
+export const updateCoursebase= (id,course) => {
+  return http.requestPut(apiUrl+'/course/coursebase/update/'+id,course)
+};
+
+//获取课程营销信息
+export const getCourseMarketById = id => {
+  return http.requestQuickGet(apiUrl+'/course/coursemarket/get/'+id)
+};
+
+// 更新课程营销信息
+export const updateCourseMarket =(id,courseMarket) => {
+  return http.requestPost(apiUrl+'/course/coursemarket/update/'+id,courseMarket)
+};

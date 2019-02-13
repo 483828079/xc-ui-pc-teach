@@ -17,12 +17,12 @@
       </el-form-item>
       <el-form-item label="课程等级" prop="grade">
         <b v-for="grade in gradeList">
-          <el-radio v-model="courseForm.grade" :label="grade.sdId" >{{grade.sdName}}</el-radio>&nbsp;&nbsp;
+          <el-radio :border="true" v-model="courseForm.grade" :label="grade.sdId" >{{grade.sdName}}</el-radio>&nbsp;&nbsp;
         </b>
       </el-form-item>
       <el-form-item label="学习模式" prop="studymodel">
         <b v-for="studymodel_v in studymodelList">
-          <el-radio v-model="courseForm.studymodel" :label="studymodel_v.sdId" >{{studymodel_v.sdName}}</el-radio>&nbsp;&nbsp;
+          <el-radio :border="true" v-model="courseForm.studymodel" :label="studymodel_v.sdId" >{{studymodel_v.sdName}}</el-radio>&nbsp;&nbsp;
         </b>
 
       </el-form-item>
@@ -91,11 +91,12 @@
             if (valid) {
               this.$confirm('确认提交吗？', '提示', {}).then(() => {
                 this.editLoading = true;
+                // 分类放入课程信息中
                 let mt = this.categoryActive[0];
                 let st = this.categoryActive[1];
                 this.courseForm.mt = mt;
                 this.courseForm.st = st;
-                let id = this.courseForm.id
+                let id = this.courseForm.id;
                 courseApi.updateCoursebase(id,this.courseForm).then((res) => {
                   this.editLoading = false;
                   if(res.success){
@@ -138,7 +139,8 @@
          courseApi.getCoursebaseById(this.courseid).then((res) => {
 //          console.log(res);
           this.courseForm = res;
-          //课程分类显示，需要两级分类
+          // 课程分类回显，cascader组件绑定的是一个数组
+           // 0索引记录着当前选中的一级分类，1索引记录着当前选中的二级分类。
           this.categoryActive.push(this.courseForm.mt);
           this.categoryActive.push(this.courseForm.st);
         });

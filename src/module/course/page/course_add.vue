@@ -25,13 +25,13 @@
         <!--这里是遍历的gradeList
           只需查询字典表中的grade。
         -->
-        <b v-for="grade in gradeList">
-          <el-radio v-model="courseForm.grade" :label="grade.sdId" >{{grade.sdName}}</el-radio>&nbsp;&nbsp;
+        <b v-for="(grade,index) in gradeList">
+          <el-radio :border="true" v-model="courseForm.grade" :label="grade.sdId" >{{grade.sdName}}</el-radio>&nbsp;&nbsp;
         </b>
       </el-form-item>
       <el-form-item label="学习模式" prop="studymodel">
         <b v-for="studymodel_v in studymodelList">
-          <el-radio v-model="courseForm.studymodel" :label="studymodel_v.sdId" >{{studymodel_v.sdName}}</el-radio>&nbsp;&nbsp;
+          <el-radio :border="true" v-model="courseForm.studymodel" :label="studymodel_v.sdId" >{{studymodel_v.sdName}}</el-radio>&nbsp;&nbsp;
         </b>
 
       </el-form-item>
@@ -97,6 +97,8 @@
       save () {
           // 处理课程分类
           // 选择课程分类存储到categoryActive
+          // categoryActive数组0索引位置记录一级分类的值
+          // 1 索引位置记录二级分类的值。
            this.courseForm.mt=  this.categoryActive[0];//大分类
            this.courseForm.st=  this.categoryActive[1];//小分类
           courseApi.addCourseBase(this.courseForm).then(res=>{

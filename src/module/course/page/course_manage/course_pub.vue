@@ -12,12 +12,19 @@
             <span v-if="previewurl && previewurl!=''"><a :href="previewurl" target="_blank">点我查看课程预览页面 </a> </span>
           </div>
         </el-card>
+        <!--
+          课程发布按钮，根据课程状态显示内容不同。
+          虽然响应回来了发布成功的页面，但是前端并不需要。
+          只要发布成功或者下线在URL之后拼接课程id。(每个课程对应一个详情页)
+
+          如果使用的是发布后响应的页面，只能每次发布才能显示出来，达不到按照状态在下面显示预览页面URL。
+        -->
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>课程发布</span>
           </div>
           <div class="text item">
-            <div v-if="course.status == '202001'">
+            <div v-if="course.status != '202001' && course.status != '202002'">
               状态：制作中<br/>
               <el-button type="primary"  @click.native="publish" >新课程发布</el-button>
             </div>
@@ -59,7 +66,7 @@ export default{
         //调用课程管理服务的预览接口，得到课程预览url
       courseApi.preview(this.courseid).then((res) => {
         if(res.success){
-          this.$message.error('预览页面生成成功，请点击下方预览链接');
+          this.$message.success('预览页面生成成功，请点击下方预览链接');
           if(res.previewUrl){
             //预览url
             this.previewurl = res.previewUrl
@@ -73,12 +80,12 @@ export default{
       //课程发布
       courseApi.publish(this.courseid).then(res=>{
           if(res.success){
-              this.$message.success("发布成功，请点击下边的链接查询课程详情页面")
-
+            this.$message.success("发布成功，请点击下边的链接查询课程详情页面")
+            // 课程发布成功，重置页面信息
+            this.getCourseView();
           }else{
             this.$message.error(res.message)
           }
-
       })
     },
     getCourseView(){
@@ -87,10 +94,8 @@ export default{
             //获取课程状态
             this.course.status = res.courseBase.status;
         }
-
       })
     }
-
   },
   mounted(){
     //课程id
@@ -98,9 +103,9 @@ export default{
     //查询课程信息
     this.getCourseView();
   }
-
-  }
+}
 </script>
+
 <style>
 
 </style>
